@@ -1,0 +1,3 @@
+[submodule "message-recovery-attack-on-ml-kem"]
+	path = message-recovery-attack-on-ml-kem
+	url = https://github.com/paprikadobi/message-recovery-attack-on-ml-kem.git

@@ -1,0 +1,17 @@
+# Datasets - too large for GitHub
+message-recovery-attack-on-ml-kem/datasets/
+
+# Model weights - too large
+*.pt
+*.pth
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Virtual environment
+venv/
