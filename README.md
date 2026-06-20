@@ -135,7 +135,7 @@ python train_attack_all_bits.py
 # Output: all_bits_results.npy, weights_bit{N}.pt
 ```
 
-### Step 3: Train ICNN (multi-bit, all 256 bits)
+### Step 3: Train Multi-bit CNN (multi-bit, all 256 bits)
 
 ```bash
 # Recommended: run on GPU (Google Colab or local CUDA)
@@ -167,34 +167,6 @@ python plot_single_bit_results.py
 | Training device (Phase 1 GPU) | Google Colab, NVIDIA Tesla T4 (14.6 GB) |
 | Target FPGA | Sakura-X board, 3 MHz |
 | Oscilloscope | Keysight MSOS104A, 200 MS/s |
-
----
-
-## Citation
-
-If you use this code in your research, please cite:
-
-```bibtex
-@misc{nair2026kyber,
-  author = {Nair, Aishwarya Jeevan},
-  title  = {Deep Learning-Based Message Recovery Against ML-KEM:
-            From Unprotected to Masked Implementations},
-  year   = {2026},
-  note   = {Research Internship Report, Radboud University, 
-            Université Bretagne Sud (CYBERUS)}
-}
-```
-
-And the baseline work this builds upon:
-
-```bibtex
-@inproceedings{dobias2026message,
-  author    = {Dobias, Patrik and Malina, Lukas},
-  title     = {Message Recovery Attack on ML-KEM},
-  booktitle = {EEICT 2026},
-  year      = {2026}
-}
-```
 
 ---
 
