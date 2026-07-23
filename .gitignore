@@ -15,3 +15,8 @@ __pycache__/
 
 # Virtual environment
 venv/
+# Model weights - too large and not reproducible
+*.pt
+*.pth
+# Old/duplicate files
+cnn_byte_accuracies_2.npy
