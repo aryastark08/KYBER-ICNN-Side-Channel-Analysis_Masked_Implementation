@@ -6,8 +6,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
-from big_icnn_dataset_loader import FullKyberTraceDataset
-from big_icnn_model import InterconnectedKyberCNN
+from multi_bit_dataset_loader import FullKyberTraceDataset
+from multi_bit_cnn_model import MultiBitCNN
 
 # ── Device ────────────────────────────────────────────────────────────────────
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'

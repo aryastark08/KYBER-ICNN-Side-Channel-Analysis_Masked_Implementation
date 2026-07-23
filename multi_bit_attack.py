@@ -9,7 +9,9 @@ import sys
 sys.path.append('..')
 
 from kyber import extract_msg
-from big_icnn_model import InterconnectedKyberCNN
+from multi_bit_dataset_loader import FullKyberTraceDataset
+from multi_bit_cnn_model import MultiBitCNN
+
 
 # ── Device ────────────────────────────────────────────────────────────────────
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -17,7 +19,7 @@ print(f"[*] Using device : {DEVICE}")
 
 # ── Config ────────────────────────────────────────────────────────────────────
 ATTACK_FILE   = '../datasets/kem_dec_unprotected_8_attack.h5'
-MODEL_WEIGHTS = 'big_icnn_best.pt'
+MODEL_WEIGHTS = 'multi_bit_best.pt'
 BATCH_SIZE    = 256
 
 # ── Load POIs ─────────────────────────────────────────────────────────────────
@@ -56,7 +58,7 @@ print(f"[+] Labels shape        : {true_labels.shape}")
 
 # ── Load model ────────────────────────────────────────────────────────────────
 print(f"\n[*] Loading model weights: {MODEL_WEIGHTS}")
-model = InterconnectedKyberCNN(samples_per_channel=SAMPLES_PER_CHANNEL).to(DEVICE)
+model = MultiBitCNN(samples_per_channel=SAMPLES_PER_CHANNEL).to(DEVICE)
 model.load_state_dict(torch.load(MODEL_WEIGHTS, map_location=DEVICE, weights_only=True))
 model.eval()
 print(f"[+] Parameters          : {sum(p.numel() for p in model.parameters()):,}")
@@ -141,12 +143,12 @@ print(f"[+] LDA single-trace  : ~0.37% (byte-level, 256-class)")
 print(f"[+] CNN single-trace  : {results[1]['overall']:.2f}% (bit-level, binary)")
 print(f"[+] CNN best N        : {best_acc:.2f}% (N={best_n})")
 
-np.save('icnn_attack_results.npy', results)
-print(f"\n[+] Saved: 'icnn_attack_results.npy'")
+np.save('multi_bit_attack_results.npy', results)
+print(f"\n[+] Saved: 'multi_bit_attack_results.npy'")
 
 try:
     from google.colab import files
-    files.download('icnn_attack_results.npy')
+    files.download('multi_bit_attack_results.npy')
     print("[+] Downloaded!")
 except:
     pass
