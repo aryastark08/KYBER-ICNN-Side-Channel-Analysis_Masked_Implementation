@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 
-class SimpleCNN(nn.Module):
+class SingleBitCNN(nn.Module):
     """
     Single-bit recovery CNN.
 

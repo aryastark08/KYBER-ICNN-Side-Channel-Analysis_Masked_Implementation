@@ -10,8 +10,8 @@ import h5py
 import sys
 sys.path.append('..')
 from kyber import extract_msg
-from dataset_loader import KyberTraceDataset
-from cnn_model import SimpleCNN
+from single_bit_dataset_loader import KyberTraceDataset
+from single_bit_cnn_model import SingleBitCNN
 
 # ── Config ────────────────────────────────────────────────────────────────────
 DEVICE      = 'cuda' if torch.cuda.is_available() else 'cpu'

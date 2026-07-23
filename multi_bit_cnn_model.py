@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 
-class InterconnectedKyberCNN(nn.Module):
+class MultiBitCNN(nn.Module):
     """
     RAM-Safe Binary CNN - fits comfortably in 16GB RAM.
 
