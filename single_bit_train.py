@@ -73,8 +73,8 @@ train_loader = DataLoader(
 )
 
 # ── Model ─────────────────────────────────────────────────────────────────────
-print("\n[*] Initializing SimpleCNN...")
-model     = SimpleCNN().to(DEVICE)
+print("\n[*] Initializing SingleBitCNN...")
+model     = SingleBitCNN().to(DEVICE)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
 

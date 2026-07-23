@@ -86,7 +86,7 @@ def train_bit(bit_index):
     )
 
     # Model
-    model     = SimpleCNN(n_pois=n_pois).to(DEVICE)
+    model     = SingleBitCNN(n_pois=n_pois).to(DEVICE)
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
 
@@ -151,7 +151,7 @@ def attack_bit(bit_index, weights_path, n_pois):
     true_labels = np.array(true_labels)
 
     # Load model
-    model = SimpleCNN(n_pois=n_pois).to(DEVICE)
+    model = SingleBitCNN(n_pois=n_pois).to(DEVICE)
     model.load_state_dict(torch.load(
         weights_path, map_location=DEVICE, weights_only=True
     ))

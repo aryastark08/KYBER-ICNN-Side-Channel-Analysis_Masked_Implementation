@@ -69,7 +69,7 @@ print(f"[+] Labels: 0={(true_labels==0).sum()} | 1={(true_labels==1).sum()}")
 
 # ── Load model ────────────────────────────────────────────────────────────────
 print(f"\n[*] Loading model weights...")
-model = SimpleCNN(n_pois=n_pois).to(DEVICE)
+model = SingleBitCNN(n_pois=n_pois).to(DEVICE)
 model.load_state_dict(torch.load(
     'single_bit_prototype_weights.pt',
     map_location=DEVICE,

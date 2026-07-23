@@ -58,7 +58,7 @@ ax.annotate(f'{best_n8_val:.1f}%\nbest N=8',
 # ── Axes formatting ───────────────────────────────────────────────────────────
 ax.set_xlabel('Bit position', fontsize=11)
 ax.set_ylabel('Accuracy (%)', fontsize=11)
-ax.set_title('SimpleCNN per-bit accuracy: training vs attack dataset',
+ax.set_title('SingleBitCNN per-bit accuracy: training vs attack dataset',
              fontsize=12, fontweight='normal', pad=12)
 ax.set_xticks(x)
 ax.set_xticklabels([f'Bit {b}' for b in bits], fontsize=10)

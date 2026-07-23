@@ -21,10 +21,10 @@ else:
     torch.backends.nnpack.enabled = False
 
 # ── Hyperparameters ───────────────────────────────────────────────────────────
-TRACE_LIMIT   = 90000   # increased from 60k
+TRACE_LIMIT   = 90000
 BATCH_SIZE    = 256
 EPOCHS        = 50
-LEARNING_RATE = 0.0005  # reduced from 0.001
+LEARNING_RATE = 0.0001
 COEFFS        = 32
 
 if DEVICE == 'cpu':
@@ -50,7 +50,7 @@ y_ram = TRACE_LIMIT * 32 * 8 * 8 / (1024**3)
 print(f"\n[*] RAM: X={x_ram:.2f}GB | y={y_ram:.2f}GB | Total={x_ram+y_ram:.2f}GB")
 
 # ── Check model size ──────────────────────────────────────────────────────────
-test_model   = InterconnectedKyberCNN(samples_per_channel=SAMPLES_PER_CHANNEL)
+test_model   = MultiBitCNN(samples_per_channel=SAMPLES_PER_CHANNEL)
 total_params = sum(p.numel() for p in test_model.parameters())
 print(f"[*] Parameters: {total_params:,}")
 del test_model
@@ -64,7 +64,7 @@ raw_dataset = FullKyberTraceDataset(
 )
 
 # ── RAM Pre-load (memory efficient) ───────────────────────────────────────────
-print(f"[*] Pre-allocating tensors (no peak RAM spike)...")
+print(f"[*] Pre-allocating tensors...")
 sample_trace, sample_label = raw_dataset[0]
 X_tensor = torch.zeros(TRACE_LIMIT, *sample_trace.shape, dtype=torch.float32)
 y_tensor = torch.zeros(TRACE_LIMIT, *sample_label.shape, dtype=torch.long)
@@ -89,8 +89,8 @@ train_loader = DataLoader(
 )
 
 # ── Model ─────────────────────────────────────────────────────────────────────
-print("\n[*] Initializing model...")
-model     = InterconnectedKyberCNN(samples_per_channel=SAMPLES_PER_CHANNEL).to(DEVICE)
+print("\n[*] Initializing Multi-Bit CNN...")
+model     = MultiBitCNN(samples_per_channel=SAMPLES_PER_CHANNEL).to(DEVICE)
 optimizer = torch.optim.Adam(
     model.parameters(),
     lr=LEARNING_RATE,
@@ -99,11 +99,11 @@ optimizer = torch.optim.Adam(
 criterion = nn.CrossEntropyLoss()
 print(f"[+] Parameters: {sum(p.numel() for p in model.parameters() if p.requires_grad):,}")
 
-# Shape check
+# ── Shape check ───────────────────────────────────────────────────────────────
 with torch.no_grad():
     dummy = X_tensor[:2].to(DEVICE)
     out   = model(dummy)
-    assert out.shape == (2, 32, 8, 2), f"Wrong: {out.shape}"
+    assert out.shape == (2, 32, 8, 2), f"Wrong output shape: {out.shape}"
     print(f"[+] Output shape: {out.shape} ✓")
 
 # ── Training ──────────────────────────────────────────────────────────────────
@@ -148,7 +148,7 @@ for epoch in range(EPOCHS):
     if train_acc > best_acc:
         best_acc   = train_acc
         no_improve = 0
-        torch.save(model.state_dict(), 'big_icnn_best.pt')
+        torch.save(model.state_dict(), 'multi_bit_best.pt')
     else:
         no_improve += 1
 
@@ -161,7 +161,7 @@ for epoch in range(EPOCHS):
 
 # ── Evaluate ──────────────────────────────────────────────────────────────────
 print("\n[*] Loading best model and evaluating...")
-model.load_state_dict(torch.load('big_icnn_best.pt', map_location=DEVICE))
+model.load_state_dict(torch.load('multi_bit_best.pt', map_location=DEVICE))
 model.eval()
 
 byte_correct = [0] * 32
@@ -195,13 +195,13 @@ print(f"\nOverall  : {overall:.2f}%")
 print(f"Baseline : 50.00%")
 print(f"Gain     : +{overall - 50:.2f}%")
 
-np.save('big_icnn_byte_accuracies.npy', np.array(byte_accuracies))
-print("\n[+] Saved: 'big_icnn_byte_accuracies.npy'")
+np.save('multi_bit_train_results.npy', np.array(byte_accuracies))
+print(f"\n[+] Saved: 'multi_bit_train_results.npy'")
 
 try:
     from google.colab import files
-    files.download('big_icnn_best.pt')
-    files.download('big_icnn_byte_accuracies.npy')
+    files.download('multi_bit_best.pt')
+    files.download('multi_bit_train_results.npy')
     print("[+] Downloaded!")
 except:
     pass
