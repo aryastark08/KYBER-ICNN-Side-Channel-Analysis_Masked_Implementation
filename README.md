@@ -56,6 +56,27 @@ This work builds directly on the attack framework by Dobias and Malina (EEICT 20
 > **Note:** Model weight files (`.pt`) are not included because they are too large and specific to a particular training run. Run the training scripts to reproduce them.
 
 ---
+## Script Dependencies
+
+```
+single_bit_cnn_model.py          multi_bit_cnn_model.py
+        ↑                                ↑
+        │ imports                        │ imports
+        │                                │
+single_bit_dataset_loader.py     multi_bit_dataset_loader.py
+        ↑                                ↑
+        │ imports both                   │ imports both
+        │                                │
+single_bit_train.py              multi_bit_train.py
+        │                                │
+        │ produces .pt weights           │ produces .pt weights
+        ↓                                ↓
+single_bit_attack.py             multi_bit_attack.py
+   (loads weights,                          (loads weights, needs kem_unprotected_attack .h5)
+    needs kem_unprotected_attack .h5)
+```
+
+---
 
 ## Requirements
 
